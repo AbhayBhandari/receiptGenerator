@@ -49,10 +49,11 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   amountContainer: {
+    width: 120,
     backgroundColor: colors.primary,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    borderRadius: 5,
+    borderRadius: 20,
     right: 10,
   },
   amountText: {
