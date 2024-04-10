@@ -47,7 +47,7 @@ const FeeCard = ({name, month, dateOfReceiving, amount}) => {
     <View style={styles.cardContainer}>
       <View style={styles.textContainer}>
         <Text style={styles.nameText}>{capitalizeName(name)}</Text>
-        <Text style={styles.monthText}>Month: {month}</Text>
+        <Text style={styles.monthText}>{month}</Text>
         <Text style={styles.dateText}>Received On: {dateOfReceiving}</Text>
         <View style={styles.feeContainer}>
           <Text style={styles.fee}>Fee: ₹ {amount}</Text>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: colors.white,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 10,
   },
   textContainer: {
@@ -79,19 +79,20 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   nameText: {
-    fontSize: 21,
+    fontSize: 17,
     fontWeight: 'bold',
     color: colors.black,
     marginVertical: 5,
   },
   monthText: {
-    fontSize: 19,
+    fontSize: 13.5,
     fontWeight: '500',
     color: colors.black,
   },
   dateText: {
-    fontSize: 15,
+    fontSize: 10,
     color: colors.black,
+    marginVertical: 5,
   },
   feeContainer: {
     justifyContent: 'center',
@@ -100,25 +101,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 30,
     backgroundColor: colors.primaryLight,
-    width: 100,
+    width: 120,
   },
   fee: {
-    fontSize: 15,
+    fontSize: 12,
     color: colors.black,
     fontWeight: '500',
   },
   openContainer: {
     width: 100,
+    height: 45,
     backgroundColor: colors.primary,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    borderRadius: 20,
+    borderRadius: 28,
     right: 10,
   },
   openText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
     textAlign: 'center',
   },
 });

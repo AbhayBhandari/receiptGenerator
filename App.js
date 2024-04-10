@@ -53,7 +53,7 @@ export default function App() {
               <Icon
                 name={focused ? 'time' : 'time-outline'}
                 color={colors.primary}
-                size={26}
+                size={30}
               />
             ),
           }}

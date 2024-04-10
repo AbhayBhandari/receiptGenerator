@@ -26,6 +26,7 @@ export const storeData = async feeDetails => {
 
 export const getAllData = async () => {
   try {
+    // await AsyncStorage.clear();
     const data = await AsyncStorage.getItem('feeDetails');
     if (data) {
       return JSON.parse(data).reverse();

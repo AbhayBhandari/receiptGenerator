@@ -5,15 +5,15 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-    ActivityIndicator,
-  KeyboardAvoidingView
+  ActivityIndicator,
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import colors from '../utils/Colors';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {generateHtmlContent} from '../utils/PdfHtmlTemplate';
 import {storeData} from '../utils/AsynStorage';
+import MonthDropdown from '../components/MonthDropdown';
+import MonthDropDownModal from '../components/MonthDropDownModal';
 
 export default function Home() {
   const [studentName, setStudentName] = useState('');
@@ -22,6 +22,8 @@ export default function Home() {
   const [generateDisabled, setGenerateDisabled] = useState(true);
   const [pdfPath, setPdfPath] = useState(null);
   const [isGenerateClicked, setIsGenerateClicked] = useState(false);
+  const [isMonthDropDownModalOpen, setIsMonthDropDownModalOpen] =
+    useState(false);
 
   useEffect(() => {
     // Enable Generate button only when all fields are filled
@@ -90,8 +92,19 @@ export default function Home() {
     }
   };
 
+  const handleMonthSelect = month => {
+    setSelectedMonth(month);
+    setIsMonthDropDownModalOpen(false);
+  };
+
   return (
-    <KeyboardAvoidingView behavior='padding' style={styles.container}>
+    <View style={styles.container}>
+      <MonthDropDownModal
+        isVisible={isMonthDropDownModalOpen}
+        items={months}
+        onSelect={handleMonthSelect}
+        onClose={() => setIsMonthDropDownModalOpen(false)}
+      />
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
@@ -100,7 +113,6 @@ export default function Home() {
           placeholder="Student Name"
           placeholderTextColor={colors.greyDark}
         />
-
         <TextInput
           style={styles.input}
           onChangeText={text => setFee(text)}
@@ -110,25 +122,7 @@ export default function Home() {
           placeholderTextColor={colors.greyDark}
         />
 
-        <View style={pickerSelectStyles.inputContainer}>
-          <RNPickerSelect
-            onValueChange={value => setSelectedMonth(value)}
-            items={months.map(month => ({
-              label: month,
-              value: month,
-              color: colors.black,
-            }))}
-            placeholder={{
-              label: 'Select Month',
-              value: '',
-            }}
-            style={{
-              ...pickerSelectStyles.inputAndroid,
-              placeholder: {color: 'black'},
-              inputAndroidContainer: {paddingHorizontal: 10},
-            }}
-          />
-        </View>
+        <MonthDropdown selectedMonth={selectedMonth} onPress={()=>setIsMonthDropDownModalOpen(true)} />
       </View>
 
       <TouchableOpacity
@@ -143,7 +137,7 @@ export default function Home() {
           <Text style={styles.buttonText}>Generate</Text>
         )}
       </TouchableOpacity>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -171,7 +165,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.primary,
-    height: 50,
+    height: 55,
     width: 290,
     borderRadius: 30,
     justifyContent: 'center',
@@ -182,7 +176,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'serif',
     fontWeight: '700',
-    fontSize: 22,
+    fontSize: 20,
     color: colors.black,
   },
   inputWrapper: {
@@ -209,17 +203,22 @@ const styles = StyleSheet.create({
 });
 
 const pickerSelectStyles = StyleSheet.create({
+  inputAndroid: {
+    fontSize: 14,
+  },
   inputContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.black,
     borderRadius: 30,
     marginBottom: 20,
+    height: 60,
     width: 250,
     backgroundColor: colors.grey,
     paddingHorizontal: 10,
     top: 20,
-  },
-  inputAndroid: {
-    fontSize: 16,
+    fontSize: 12,
+    backgroundColor: colors.primaryLight,
   },
 });
