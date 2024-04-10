@@ -14,16 +14,19 @@ import {generateHtmlContent} from '../utils/PdfHtmlTemplate';
 import {storeData} from '../utils/AsynStorage';
 import MonthDropdown from '../components/MonthDropdown';
 import MonthDropDownModal from '../components/MonthDropDownModal';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Home() {
   const [studentName, setStudentName] = useState('');
   const [fee, setFee] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [generateDisabled, setGenerateDisabled] = useState(true);
   const [pdfPath, setPdfPath] = useState(null);
   const [isGenerateClicked, setIsGenerateClicked] = useState(false);
   const [isMonthDropDownModalOpen, setIsMonthDropDownModalOpen] =
     useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   useEffect(() => {
     // Enable Generate button only when all fields are filled
@@ -47,21 +50,29 @@ export default function Home() {
 
   const handleGenerate = async () => {
     setIsGenerateClicked(true);
-    // Get today's date (date of receving fee)
-    const currentDate = new Date().toLocaleDateString();
+    console.log('selected date', selectedDate);
+
+    const date = new Date(selectedDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // January is 0, so we add 1
+    const year = date.getFullYear();
+    const formattedDate = `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
+    console.log('f date', formattedDate);
 
     const feeDetails = {
       name: studentName,
       fee: fee.toString(),
       month: selectedMonth,
-      dateOfReceiving: currentDate,
+      dateOfReceiving: formattedDate,
     };
 
     // Define HTML content for the PDF
     const htmlContent = generateHtmlContent(
       studentName,
       selectedMonth,
-      currentDate,
+      formattedDate,
     );
 
     try {
@@ -73,7 +84,7 @@ export default function Home() {
       });
 
       if (filePath) {
-        console.log(feeDetails.fee, 'feeeeee');
+        console.log(feeDetails, 'feeeeee');
         await storeData(feeDetails);
 
         const path = FileViewer.open(filePath).then(() => {
@@ -81,6 +92,7 @@ export default function Home() {
           setStudentName('');
           setFee('');
           setSelectedMonth('');
+          setSelectedDate(new Date());
           setGenerateDisabled(true);
         });
       }
@@ -95,6 +107,12 @@ export default function Home() {
   const handleMonthSelect = month => {
     setSelectedMonth(month);
     setIsMonthDropDownModalOpen(false);
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || selectedDate;
+    setShowDatePicker(false);
+    setSelectedDate(currentDate);
   };
 
   return (
@@ -122,7 +140,28 @@ export default function Home() {
           placeholderTextColor={colors.greyDark}
         />
 
-        <MonthDropdown selectedMonth={selectedMonth} onPress={()=>setIsMonthDropDownModalOpen(true)} />
+        <MonthDropdown
+          selectedMonth={selectedMonth}
+          onPress={() => setIsMonthDropDownModalOpen(true)}
+        />
+
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setShowDatePicker(true)}>
+          <Text style={styles.textStyle}>
+            {selectedDate.toLocaleDateString()}
+          </Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
       </View>
 
       <TouchableOpacity
@@ -162,6 +201,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     fontFamily: 'serif',
     fontWeight: '700',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: colors.primary,
@@ -171,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 50,
+    bottom: 80,
   },
   buttonText: {
     fontFamily: 'serif',
@@ -184,7 +224,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     width: '88%',
     alignItems: 'center',
-    height: 350,
+    height: 400,
     justifyContent: 'center',
     borderRadius: 20,
   },
@@ -200,25 +240,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputAndroid: {
-    fontSize: 14,
-  },
-  inputContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.black,
-    borderRadius: 30,
-    marginBottom: 20,
-    height: 60,
-    width: 250,
-    backgroundColor: colors.grey,
-    paddingHorizontal: 10,
-    top: 20,
-    fontSize: 12,
-    backgroundColor: colors.primaryLight,
+  textStyle: {
+    fontSize: 16,
+    fontFamily: 'serif',
+    fontWeight: '700',
+    color: colors.black,
   },
 });
