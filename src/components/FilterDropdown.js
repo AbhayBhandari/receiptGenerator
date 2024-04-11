@@ -49,6 +49,7 @@ const FilterDropdown = ({filterName, selectedValue, options, onSelect}) => {
 
 const styles = StyleSheet.create({
   container: {
+    zIndex: 2,
     backgroundColor: colors.primary,
     borderColor: colors.black,
     borderWidth: 1,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: colors.black,
-    zIndex: 1,
+    zIndex: 2,
   },
   option: {
     alignItems: 'center',
