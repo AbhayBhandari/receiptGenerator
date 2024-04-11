@@ -1,11 +1,17 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import colors from '../utils/Colors';
 
 export default function MonthDropdown({onPress, selectedMonth}) {
   return (
     <TouchableOpacity style={styles.input} onPress={onPress}>
-      <Text style={[styles.textStyle, {color: selectedMonth? colors.black:colors.greyDark}]}>{selectedMonth || 'Month'}</Text>
+      <Text
+        style={[
+          styles.textStyle,
+          {color: selectedMonth ? colors.black : colors.greyDark},
+        ]}>
+        {selectedMonth || 'Month'}
+      </Text>
     </TouchableOpacity>
   );
 }

@@ -6,6 +6,7 @@ import Analytics from './src/screens/Analytics';
 import History from './src/screens/History';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from './src/utils/Colors';
+import Search from './src/screens/Search';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -30,7 +31,21 @@ export default function App() {
             ),
           }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          options={{
+            tabBarLabel: 'Search',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name={focused ? 'search' : 'search-outline'}
+                color={colors.primary}
+                size={30}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
           name="Analytics"
           component={Analytics}
           options={{
@@ -39,11 +54,11 @@ export default function App() {
               <Icon
                 name={focused ? 'analytics' : 'analytics-outline'}
                 color={colors.primary}
-                size={26}
+                size={30}
               />
             ),
           }}
-        /> */}
+        />
         <Tab.Screen
           name="History"
           component={History}
