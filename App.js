@@ -1,14 +1,18 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import Home from './src/screens/Home';
 import Analytics from './src/screens/Analytics';
 import History from './src/screens/History';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from './src/utils/Colors';
 import Search from './src/screens/Search';
+import Filter from './src/screens/Filter';
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
@@ -33,7 +37,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Search"
-          component={Search}
+          // component={Search}
           options={{
             tabBarLabel: 'Search',
             tabBarIcon: ({focused}) => (
@@ -43,8 +47,22 @@ export default function App() {
                 size={30}
               />
             ),
-          }}
-        />
+          }}>
+          {() => (
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Search"
+                component={Search}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Filter"
+                component={Filter}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          )}
+        </Tab.Screen>
         <Tab.Screen
           name="Analytics"
           component={Analytics}

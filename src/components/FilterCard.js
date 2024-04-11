@@ -1,28 +1,24 @@
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import colors from '../utils/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FilterCard = ({data, onPress, filterBy}) => {
-  const navigation = useNavigation();
-
-  // const handlePress = () => {
-  //   navigation.navigate('MonthDetails', {monthData: month});
-  // };
-
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
-        {filterBy === 'Name' ? (
+        {filterBy === 'Name' && (
           <Icon
             style={styles.iconStyle}
             name="person-circle-sharp"
             color={colors.black}
             size={35}
           />
-        ) : null}
-        <Text style={styles.dataText}>{Object.keys(data)[0]}</Text>
+        )}
+        <Text
+          style={[styles.dataText, filterBy === 'Name' && styles.textWithIcon]}>
+          {Object.keys(data)[0]}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -35,7 +31,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     alignItems: 'center',
-    justifyContent: 'center',
     shadowColor: colors.black,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
@@ -45,12 +40,15 @@ const styles = StyleSheet.create({
   },
   dataText: {
     color: colors.black,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
+    marginLeft: 15, // Adjust the margin for text without icon
+  },
+  textWithIcon: {
+    marginLeft: 10, // Adjust the margin for text with icon
   },
   iconStyle: {
-    position: 'absolute',
-    left: 25,
+    marginLeft: 5, // Adjust the margin for icon
   },
 });
 

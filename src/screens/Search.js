@@ -86,6 +86,14 @@ const Search = ({navigation}) => {
     setFilteredData(filteredData);
   };
 
+  const handleMonthCard = monthData => {
+    navigation.navigate('Filter', {data: monthData});
+  };
+
+  const handleNameCard = nameData => {
+    navigation.navigate('Filter', {data: nameData});
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.dropdownWrapper}>
@@ -113,7 +121,11 @@ const Search = ({navigation}) => {
         {selectedFilterBy === 'Month' ? (
           <View>
             {Object.entries(filteredData).map(([key, value]) => (
-              <FilterCard key={key} data={{[key]: value}} />
+              <FilterCard
+                key={key}
+                data={{[key]: value}}
+                onPress={() => handleMonthCard(value)}
+              />
             ))}
           </View>
         ) : null}
@@ -122,7 +134,12 @@ const Search = ({navigation}) => {
         {selectedFilterBy === 'Name' ? (
           <View>
             {Object.entries(filteredData).map(([key, value]) => (
-              <FilterCard filterBy="Name" key={key} data={{[key]: value}} />
+              <FilterCard
+                filterBy="Name"
+                key={key}
+                data={{[key]: value}}
+                onPress={() => handleNameCard(value)}
+              />
             ))}
           </View>
         ) : null}
@@ -145,7 +162,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     justifyContent: 'center',
     paddingVertical: 20,
-    paddingHorizontal: 50,
+    paddingHorizontal: 35,
   },
   nothingFoundTextStyle: {
     alignSelf: 'center',
