@@ -2,44 +2,11 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {LineChart} from 'react-native-chart-kit';
 
-export default function LineChartGraph() {
+export default function LineChartGraph({data}) {
   return (
     <View>
       <LineChart
-        data={{
-          labels: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sept',
-            'Oct',
-            'Nov',
-            'Dec',
-          ],
-          datasets: [
-            {
-              data: [
-                100,
-                200,
-                500,
-                600,
-                700,
-                800,
-                900,
-                300,
-                100,
-                600,
-                500,
-                900,
-              ],
-            },
-          ],
-        }}
+        data={data}
         width={Dimensions.get('window').width - 15}
         height={280}
         yAxisLabel="₹ "

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import BarChartGraph from '../components/BarChartGraph';
 import LineChartGraph from '../components/LineChartGraph';
@@ -7,6 +7,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {getAllData} from '../utils/AsynStorage';
 
 export default function Analytics() {
+  const [isLoading, setIsLoading] = useState(true);
   const [feeSumByMonth, setFeeSumByMonth] = useState({
     labels: [],
     datasets: [{data: []}],
@@ -18,10 +19,7 @@ export default function Analytics() {
       const fetchData = async () => {
         try {
           const allData = await getAllData();
-          console.log('all data', allData);
           const currentYear = new Date().getFullYear();
-
-          console.log('current year', currentYear);
 
           // Filter data for the current year
           const filteredData = allData.filter(item => {
@@ -29,40 +27,45 @@ export default function Analytics() {
             return year === currentYear;
           });
 
-          console.log('filtered data from current year', filteredData);
-
           // Extract unique months present in the filtered data
           const uniqueMonths = [
             ...new Set(filteredData.map(item => item.month)),
           ];
 
-          console.log('uniq months', uniqueMonths);
+          // Generate labels as 3-character abbreviations
+          const monthAbbreviations = {
+            January: 'Jan',
+            February: 'Feb',
+            March: 'Mar',
+            April: 'Apr',
+            May: 'May',
+            June: 'Jun',
+            July: 'Jul',
+            August: 'Aug',
+            September: 'Sep',
+            October: 'Oct',
+            November: 'Nov',
+            December: 'Dec',
+          };
+          const labels = uniqueMonths.map(month => monthAbbreviations[month]);
 
-          // Generate labels and initialize dataset with zeros
-          const labels = uniqueMonths.map(
-            month => month.charAt(0).toUpperCase() + month.slice(1),
-          );
-
-          console.log('labels', labels);
+          // Initialize dataset with zeros
           const datasets = [{data: Array(labels.length).fill(0)}];
-
-          console.log('dataset', datasets);
 
           // Calculate sum of fees for each month
           filteredData.forEach(item => {
-            const monthIndex = labels.indexOf(
-              item.month.charAt(0).toUpperCase() + item.month.slice(1),
-            );
+            const monthIndex = labels.indexOf(monthAbbreviations[item.month]);
             if (monthIndex !== -1) {
               datasets[0].data[monthIndex] += parseInt(item.fee);
             }
           });
 
-          console.log('labels processed', labels);
-          console.log('dataset processed', datasets);
+          console.log('datasets', datasets);
+          console.log('lab', labels);
 
           // Update state with the calculated sums
           setFeeSumByMonth({labels, datasets});
+          setIsLoading(false);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -71,10 +74,18 @@ export default function Analytics() {
     }, []),
   );
 
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <BarChartGraph />
-      <LineChartGraph />
+      <LineChartGraph data={feeSumByMonth} />
     </View>
   );
 }
