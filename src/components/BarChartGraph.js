@@ -24,7 +24,7 @@ export default function BarChartGraph({ data }) {
           backgroundColor: '#e26a00',
           backgroundGradientFrom: '#fb8c00',
           backgroundGradientTo: '#ffa726',
-          decimalPlaces: 0,
+          decimalPlaces: 1,
           fillShadowGradientFromOpacity: 0.7,
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
