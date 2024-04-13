@@ -11,7 +11,6 @@ export default function LineChartGraph({data}) {
         width={Dimensions.get('window').width - 15}
         height={280}
         yAxisLabel="₹ "
-        yAxisSuffix="k"
         yAxisInterval={1}
         chartConfig={{
           propsForBackgroundLines: {
