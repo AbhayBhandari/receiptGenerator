@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   nameText: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: 'bold',
     color: colors.black,
     marginVertical: 5,

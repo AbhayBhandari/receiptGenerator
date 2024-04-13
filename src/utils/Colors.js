@@ -6,6 +6,7 @@ const colors = {
   black: '#000000',
   grey: '#d2d2d2',
   greyDark: '#7a7a7a',
+  tabIcons: '#fb8c00',
 };
 
 export default colors;

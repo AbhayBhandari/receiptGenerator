@@ -29,7 +29,7 @@ export default function App() {
             tabBarIcon: ({focused}) => (
               <Icon
                 name={focused ? 'home' : 'home-outline'}
-                color={colors.primary}
+                color={colors.tabIcons}
                 size={26}
               />
             ),
@@ -43,7 +43,7 @@ export default function App() {
             tabBarIcon: ({focused}) => (
               <Icon
                 name={focused ? 'search' : 'search-outline'}
-                color={colors.primary}
+                color={colors.tabIcons}
                 size={30}
               />
             ),
@@ -71,7 +71,7 @@ export default function App() {
             tabBarIcon: ({focused}) => (
               <Icon
                 name={focused ? 'analytics' : 'analytics-outline'}
-                color={colors.primary}
+                color={colors.tabIcons}
                 size={30}
               />
             ),
@@ -85,7 +85,7 @@ export default function App() {
             tabBarIcon: ({focused}) => (
               <Icon
                 name={focused ? 'time' : 'time-outline'}
-                color={colors.primary}
+                color={colors.tabIcons}
                 size={30}
               />
             ),
