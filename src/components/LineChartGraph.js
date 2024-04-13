@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import React from 'react';
 import {LineChart} from 'react-native-chart-kit';
 
@@ -42,5 +42,3 @@ export default function LineChartGraph({data}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

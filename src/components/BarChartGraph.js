@@ -1,21 +1,13 @@
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, View} from 'react-native';
 import React from 'react';
-import {BarChart} from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43],
-    },
-  ],
-};
-
-export default function BarChartGraph() {
+export default function BarChartGraph({data}) {
   return (
     <View>
       <BarChart
         data={data}
+        segments={3}
         width={Dimensions.get('window').width - 15}
         height={280}
         yAxisLabel={'₹ '}
@@ -42,5 +34,3 @@ export default function BarChartGraph() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

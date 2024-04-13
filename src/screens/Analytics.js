@@ -88,12 +88,17 @@ export default function Analytics() {
           // state with the calculated sums
           setFeeSumByMonth({labels, datasets});
 
-          const lastFiveYears = [];
-          for (let i = 0; i < 5; i++) {
-            lastFiveYears.push(currentYear - i);
-          }
+          const uniqueYears = [
+            ...new Set(allData.map(item => item.dateOfReceiving.split('-')[2])),
+          ];
 
-          const yearLabels = lastFiveYears.map(year => year.toString());
+          const lastFiveYears = uniqueYears
+            .map(year => parseInt(year))
+            .filter(year => currentYear - year < 5)
+            .sort((a, b) => b - a)
+            .map(year => year.toString());
+
+          const yearLabels = lastFiveYears;
           const yearDatasets = [{data: Array(yearLabels.length).fill(0)}];
 
           allData.forEach(item => {
@@ -105,8 +110,8 @@ export default function Analytics() {
             }
           });
 
-          console.log("year labels", yearLabels)
-          console.log('year dataset', yearDatasets);
+          console.log('year labels-', yearLabels);
+          console.log('year dataset-', yearDatasets);
 
           // state with the calculated sums
           setFeeSumByYear({yearLabels, yearDatasets});
@@ -130,7 +135,7 @@ export default function Analytics() {
 
   return (
     <View style={styles.container}>
-      <BarChartGraph />
+      <BarChartGraph data={feeSumByYear} />
       <LineChartGraph data={feeSumByMonth} />
     </View>
   );
