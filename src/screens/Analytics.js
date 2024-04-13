@@ -135,11 +135,15 @@ export default function Analytics() {
 
   return (
     <View style={styles.container}>
-      {feeSumByMonth?.datasets?.length > 0 && feeSumByYear?.datasets?.length > 0 ? <>
-      <BarChartGraph data={feeSumByYear} />
-      <LineChartGraph data={feeSumByMonth} />
-      </>: <Text style={styles.noDataFoundTextStyle}>No Data Found!</Text>}
-      
+      {feeSumByMonth?.datasets?.length > 0 &&
+      feeSumByYear?.datasets?.length > 0 ? (
+        <>
+          <BarChartGraph data={feeSumByYear} />
+          <LineChartGraph data={feeSumByMonth} />
+        </>
+      ) : (
+        <Text style={styles.noDataFoundTextStyle}>No Data Found!</Text>
+      )}
     </View>
   );
 }
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
   noDataFoundTextStyle: {
     fontSize: 18,
     color: colors.greyDark,
-    fontFamily: "serif",
-    fontWeight: "bold"
-  }
+    fontFamily: 'serif',
+    fontWeight: 'bold',
+  },
 });
