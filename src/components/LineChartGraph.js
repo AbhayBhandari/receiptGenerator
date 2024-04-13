@@ -7,6 +7,7 @@ export default function LineChartGraph({data}) {
     <View>
       <LineChart
         data={data}
+        segments={data.labels.length/2}
         width={Dimensions.get('window').width - 15}
         height={280}
         yAxisLabel="₹ "

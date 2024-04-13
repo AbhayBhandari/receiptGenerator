@@ -1,4 +1,4 @@
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import BarChartGraph from '../components/BarChartGraph';
 import LineChartGraph from '../components/LineChartGraph';
@@ -13,26 +13,30 @@ export default function Analytics() {
     datasets: [{data: []}],
   });
 
+  const [feeSumByYear, setFeeSumByYear] = useState({
+    labels: [],
+    datasets: [{data: []}],
+  });
+
   useFocusEffect(
     React.useCallback(() => {
-      // Async function to fetch data from AsyncStorage
       const fetchData = async () => {
         try {
           const allData = await getAllData();
           const currentYear = new Date().getFullYear();
 
-          // Filter data for the current year
+          // Filtered data for the current year
           const filteredData = allData.filter(item => {
             const year = parseInt(item.dateOfReceiving.split('-')[2]);
             return year === currentYear;
           });
 
-          // Extract unique months present in the filtered data
+          // Extracted unique months present in the filtered data
           const uniqueMonths = [
             ...new Set(filteredData.map(item => item.month)),
           ];
 
-          // Generate labels as 3-character abbreviations
+          // Generated labels as 3-character abbreviations and sort them
           const monthAbbreviations = {
             January: 'Jan',
             February: 'Feb',
@@ -47,12 +51,30 @@ export default function Analytics() {
             November: 'Nov',
             December: 'Dec',
           };
-          const labels = uniqueMonths.map(month => monthAbbreviations[month]);
+          const labels = uniqueMonths
+            .map(month => monthAbbreviations[month])
+            .sort((a, b) => {
+              const months = [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+              ];
+              return months.indexOf(a) - months.indexOf(b);
+            });
 
-          // Initialize dataset with zeros
+          // Initialized dataset with zeros
           const datasets = [{data: Array(labels.length).fill(0)}];
 
-          // Calculate sum of fees for each month
+          // sum of fees for each month
           filteredData.forEach(item => {
             const monthIndex = labels.indexOf(monthAbbreviations[item.month]);
             if (monthIndex !== -1) {
@@ -63,8 +85,32 @@ export default function Analytics() {
           console.log('datasets', datasets);
           console.log('lab', labels);
 
-          // Update state with the calculated sums
+          // state with the calculated sums
           setFeeSumByMonth({labels, datasets});
+
+          const lastFiveYears = [];
+          for (let i = 0; i < 5; i++) {
+            lastFiveYears.push(currentYear - i);
+          }
+
+          const yearLabels = lastFiveYears.map(year => year.toString());
+          const yearDatasets = [{data: Array(yearLabels.length).fill(0)}];
+
+          allData.forEach(item => {
+            const yearIndex = yearLabels.indexOf(
+              item.dateOfReceiving.split('-')[2],
+            );
+            if (yearIndex !== -1) {
+              yearDatasets[0].data[yearIndex] += parseInt(item.fee);
+            }
+          });
+
+          console.log("year labels", yearLabels)
+          console.log('year dataset', yearDatasets);
+
+          // state with the calculated sums
+          setFeeSumByYear({yearLabels, yearDatasets});
+
           setIsLoading(false);
         } catch (error) {
           console.error('Error fetching data:', error);
