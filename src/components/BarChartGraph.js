@@ -1,17 +1,18 @@
 import {Dimensions, View} from 'react-native';
 import React from 'react';
-import { BarChart } from 'react-native-chart-kit';
+import {BarChart} from 'react-native-chart-kit';
 
 export default function BarChartGraph({data}) {
   return (
     <View>
       <BarChart
-        data={data}
-        segments={3}
+        data={{labels: data.yearLabels, datasets: data.yearDatasets}}
+        segments={data.yearLabels.length / 2 + 1}
         width={Dimensions.get('window').width - 15}
         height={280}
         yAxisLabel={'₹ '}
         yAxisSuffix="k"
+        fromZero={true}
         chartConfig={{
           propsForBackgroundLines: {
             stroke: 'white',
