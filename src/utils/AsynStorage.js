@@ -38,3 +38,32 @@ export const getAllData = async () => {
     return [];
   }
 };
+
+export const storeStudent = async studentName => {
+  try {
+    const existingStudents = await getAllStudents();
+    const updatedStudents = [...existingStudents, studentName];
+    await AsyncStorage.setItem('students', JSON.stringify(updatedStudents));
+  } catch (error) {
+    console.error('Error storing student:', error);
+  }
+};
+
+export const loadStudents = async () => {
+  try {
+    const storedStudents = await getAllStudents();
+    return storedStudents;
+  } catch (error) {
+    console.error('Error loading students:', error);
+  }
+};
+
+const getAllStudents = async () => {
+  try {
+    const data = await AsyncStorage.getItem('students');
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Error getting all students:', error);
+    return [];
+  }
+};

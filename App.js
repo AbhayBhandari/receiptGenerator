@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import colors from './src/utils/Colors';
 import Search from './src/screens/Search';
 import Filter from './src/screens/Filter';
+import Students from './src/screens/Students';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -71,6 +72,20 @@ export default function App() {
             tabBarIcon: ({focused}) => (
               <Icon
                 name={focused ? 'analytics' : 'analytics-outline'}
+                color={colors.tabIcons}
+                size={30}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Students"
+          component={Students}
+          options={{
+            tabBarLabel: 'Students',
+            tabBarIcon: ({focused}) => (
+              <Icon
+                name={focused ? 'person-circle-sharp' : 'person-circle-outline'}
                 color={colors.tabIcons}
                 size={30}
               />
