@@ -7,6 +7,8 @@ const colors = {
   grey: '#d2d2d2',
   greyDark: '#7a7a7a',
   tabIcons: '#fb8c00',
+  success: '#4CAF50',
+  error: '#FF5722',
 };
 
 export default colors;

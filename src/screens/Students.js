@@ -134,12 +134,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderRadius: 10,
     marginBottom: 10,
     marginHorizontal: 20,
-    elevation: 3, // Shadow for Android
-    shadowColor: 'black', // Shadow for iOS
+    elevation: 3,
+    shadowColor: colors.black,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   studentText: {
-    color: 'black',
+    color: colors.black,
     fontFamily: 'serif',
     fontWeight: '700',
     fontSize: 14,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3, // Shadow for Android
-    shadowColor: 'black', // Shadow for iOS
+    shadowColor: colors.black,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: 20,
     width: '80%',
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: 'serif',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.greyDark,
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
