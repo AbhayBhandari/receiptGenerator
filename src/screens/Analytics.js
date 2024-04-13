@@ -14,8 +14,8 @@ export default function Analytics() {
   });
 
   const [feeSumByYear, setFeeSumByYear] = useState({
-    labels: [],
-    datasets: [{data: []}],
+    yearLabels: [],
+    yearDatasets: [{data: []}],
   });
 
   useFocusEffect(
@@ -92,10 +92,11 @@ export default function Analytics() {
             ...new Set(allData.map(item => item.dateOfReceiving.split('-')[2])),
           ];
 
+          // Sorted uniqueYears in descending order and select the first five years
           const lastFiveYears = uniqueYears
             .map(year => parseInt(year))
-            .filter(year => currentYear - year < 5)
             .sort((a, b) => b - a)
+            .slice(0, 5)
             .map(year => year.toString());
 
           const yearLabels = lastFiveYears;
@@ -135,8 +136,13 @@ export default function Analytics() {
 
   return (
     <View style={styles.container}>
+      {console.log(
+        'year wale ki length',
+        feeSumByYear?.yearDatasets?.length > 0,
+      )}
+      {console.log('check check', Math.ceil(feeSumByMonth?.datasets?.length/2))}
       {feeSumByMonth?.datasets?.length > 0 &&
-      feeSumByYear?.datasets?.length > 0 ? (
+      feeSumByYear?.yearDatasets?.length > 0 ? (
         <>
           <BarChartGraph data={feeSumByYear} />
           <LineChartGraph data={feeSumByMonth} />
