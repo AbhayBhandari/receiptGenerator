@@ -52,7 +52,7 @@ export default function App() {
           {() => (
             <Stack.Navigator>
               <Stack.Screen
-                name="Search"
+                name="Search-Stack"
                 component={Search}
                 options={{headerShown: false}}
               />
