@@ -62,6 +62,20 @@ export default function Students() {
     setModalVisible(false);
   };
 
+  const deleteStudent = (index) => {
+    // Delete the student with the corresponding index
+    const updatedStudents = [...students];
+    updatedStudents.splice(index, 1);
+    setStudents(updatedStudents);
+  };
+
+  const editStudent = index => {
+    // Edit the student with the corresponding index
+    const studentToEdit = students[index];
+    setNewStudentName(studentToEdit);
+    setModalVisible(true);
+  };
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -82,6 +96,22 @@ export default function Students() {
               style={styles.icon}
             />
             <Text style={styles.studentText}>{student}</Text>
+            <TouchableOpacity onPress={() => editStudent(index)}>
+              <Icon
+                name="pencil-outline"
+                size={20}
+                color={colors.black}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => deleteStudent(index)}>
+              <Icon
+                name="trash-outline"
+                size={20}
+                color={colors.black}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
           </View>
         ))}
       </ScrollView>

@@ -67,3 +67,15 @@ const getAllStudents = async () => {
     return [];
   }
 };
+
+export const deleteStudent = async studentName => {
+  try {
+    const existingStudents = await getAllStudents();
+    const updatedStudents = existingStudents.filter(
+      name => name !== studentName,
+    );
+    await AsyncStorage.setItem('students', JSON.stringify(updatedStudents));
+  } catch (error) {
+    console.error('Error deleting student:', error);
+  }
+};
