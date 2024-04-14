@@ -9,12 +9,7 @@ import {
 import React from 'react';
 import colors from '../utils/Colors';
 
-export default function DropDownModal({
-  isVisible,
-  items,
-  onSelect,
-  onClose,
-}) {
+export default function DropDownModal({isVisible, items, onSelect, onClose}) {
   return (
     <Modal
       visible={isVisible}
@@ -23,15 +18,19 @@ export default function DropDownModal({
       onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <FlatList
-            data={items}
-            renderItem={({item}) => (
-              <TouchableOpacity onPress={() => onSelect(item)}>
-                <Text style={styles.itemText}>{item}</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          {items?.length > 0 ? (
+            <FlatList
+              data={items}
+              renderItem={({item}) => (
+                <TouchableOpacity onPress={() => onSelect(item)}>
+                  <Text style={styles.itemText}>{item}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          ) : (
+            <Text style={styles.itemText}>Nothing Found!</Text>
+          )}
         </View>
       </View>
     </Modal>

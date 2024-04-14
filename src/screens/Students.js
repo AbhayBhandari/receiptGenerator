@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../utils/Colors';
-import {storeStudent, loadStudents} from '../utils/AsynStorage';
+import {storeStudent, loadStudents, deleteStudent} from '../utils/AsynStorage';
 
 export default function Students() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -62,18 +62,9 @@ export default function Students() {
     setModalVisible(false);
   };
 
-  const deleteStudent = (index) => {
-    // Delete the student with the corresponding index
-    const updatedStudents = [...students];
-    updatedStudents.splice(index, 1);
+  const handleDeleteStudent = async studentName => {
+    const updatedStudents = await deleteStudent(studentName);
     setStudents(updatedStudents);
-  };
-
-  const editStudent = index => {
-    // Edit the student with the corresponding index
-    const studentToEdit = students[index];
-    setNewStudentName(studentToEdit);
-    setModalVisible(true);
   };
 
   if (isLoading) {
@@ -87,33 +78,41 @@ export default function Students() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {students.map((student, index) => (
-          <View key={index} style={styles.studentCard}>
-            <Icon
-              name="person"
-              size={20}
-              color={colors.black}
-              style={styles.icon}
-            />
-            <Text style={styles.studentText}>{student}</Text>
-            <TouchableOpacity onPress={() => editStudent(index)}>
+        {students?.length > 0 ? (
+          students.map((student, index) => (
+            <View key={index} style={styles.studentCard}>
               <Icon
-                name="pencil-outline"
+                name="person"
                 size={20}
                 color={colors.black}
                 style={styles.icon}
               />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => deleteStudent(index)}>
-              <Icon
-                name="trash-outline"
-                size={20}
-                color={colors.black}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
+              <Text style={styles.studentText}>{student}</Text>
+              <TouchableOpacity
+                onPress={() => handleDeleteStudent(student)}
+                style={styles.deleteButton}>
+                <Icon name="trash-outline" size={20} color="red" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => console.log('Edit student:', student)}
+                style={styles.editButton}>
+                <Icon name="create-outline" size={20} color="blue" />
+              </TouchableOpacity>
+            </View>
+          ))
+        ) : (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={{
+                color: colors.greyDark,
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+              }}>
+              No Data Found!
+            </Text>
           </View>
-        ))}
+        )}
       </ScrollView>
       <TouchableOpacity onPress={addStudent} style={styles.addButton}>
         <Icon name="add" size={30} color="white" />
@@ -214,6 +213,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   studentText: {
+    flex: 1,
     color: colors.black,
     fontFamily: 'serif',
     fontWeight: '700',
@@ -290,5 +290,11 @@ const styles = StyleSheet.create({
     fontFamily: 'serif',
     fontWeight: '700',
     color: colors.black,
+  },
+  deleteButton: {
+    marginLeft: 'auto',
+  },
+  editButton: {
+    marginLeft: 10,
   },
 });

@@ -75,6 +75,7 @@ export const deleteStudent = async studentName => {
       name => name !== studentName,
     );
     await AsyncStorage.setItem('students', JSON.stringify(updatedStudents));
+    return updatedStudents;
   } catch (error) {
     console.error('Error deleting student:', error);
   }
