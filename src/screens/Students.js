@@ -18,6 +18,8 @@ export default function Students() {
   const [newStudentName, setNewStudentName] = useState('');
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isNameExistsModalVisible, setIsNameExistsModalVisible] =
+    useState(false);
 
   useEffect(() => {
     loadStudents()
@@ -36,14 +38,22 @@ export default function Students() {
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
-      storeStudent(capitalizedStudentName)
-        .then(() => {
-          setNewStudentName('');
-          setModalVisible(false);
-          // Reload students after saving a new student
-          loadStudents().then(storedStudents => setStudents(storedStudents));
-        })
-        .catch(error => console.error('Error saving student:', error));
+
+      // Check if the name already exists
+      if (students.includes(capitalizedStudentName)) {
+        // If the name already exists, show the modal
+        setIsNameExistsModalVisible(true);
+      } else {
+        // Otherwise, save the student
+        storeStudent(capitalizedStudentName)
+          .then(() => {
+            setNewStudentName('');
+            setModalVisible(false);
+            // Reload students after saving a new student
+            loadStudents().then(storedStudents => setStudents(storedStudents));
+          })
+          .catch(error => console.error('Error saving student:', error));
+      }
     }
   };
 
@@ -112,6 +122,32 @@ export default function Students() {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal for name already exists */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isNameExistsModalVisible}
+        onRequestClose={() => {
+          setIsNameExistsModalVisible(false);
+        }}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Student name already exists!</Text>
+            <TouchableOpacity
+              onPress={() => setIsNameExistsModalVisible(false)}
+              style={[
+                styles.modalButton,
+                styles.cancelButton,
+                {alignItems: 'center'},
+              ]}>
+              <Text style={[styles.buttonText, styles.buttonTextWhite]}>
+                OK
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -216,5 +252,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontFamily: 'serif',
+    fontWeight: '700',
+    color: colors.black,
   },
 });
