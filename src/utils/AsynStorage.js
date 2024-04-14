@@ -80,3 +80,19 @@ export const deleteStudent = async studentName => {
     console.error('Error deleting student:', error);
   }
 };
+
+export const updateStudent = async (oldName, newName) => {
+  try {
+    const existingStudents = await getAllStudents();
+    const index = existingStudents.indexOf(oldName);
+    if (index !== -1) {
+      existingStudents[index] = newName;
+      await AsyncStorage.setItem('students', JSON.stringify(existingStudents));
+      return existingStudents;
+    }
+    return existingStudents;
+  } catch (error) {
+    console.error('Error updating student:', error);
+    return [];
+  }
+};

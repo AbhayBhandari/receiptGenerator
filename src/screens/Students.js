@@ -11,7 +11,12 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../utils/Colors';
-import {storeStudent, loadStudents, deleteStudent} from '../utils/AsynStorage';
+import {
+  storeStudent,
+  loadStudents,
+  deleteStudent,
+  updateStudent,
+} from '../utils/AsynStorage';
 
 export default function Students() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -20,6 +25,7 @@ export default function Students() {
   const [isLoading, setIsLoading] = useState(true);
   const [isNameExistsModalVisible, setIsNameExistsModalVisible] =
     useState(false);
+  const [editingStudentName, setEditingStudentName] = useState(null);
 
   useEffect(() => {
     loadStudents()
@@ -29,9 +35,11 @@ export default function Students() {
 
   const addStudent = () => {
     setModalVisible(true);
+    setEditingStudentName(null);
+    setNewStudentName('');
   };
 
-  const saveStudent = () => {
+  const saveStudent = async () => {
     if (newStudentName.trim() !== '') {
       const capitalizedStudentName = newStudentName
         .trim()
@@ -44,15 +52,15 @@ export default function Students() {
         // If the name already exists, show the modal
         setIsNameExistsModalVisible(true);
       } else {
-        // Otherwise, save the student
-        storeStudent(capitalizedStudentName)
-          .then(() => {
-            setNewStudentName('');
-            setModalVisible(false);
-            // Reload students after saving a new student
-            loadStudents().then(storedStudents => setStudents(storedStudents));
-          })
-          .catch(error => console.error('Error saving student:', error));
+        if (editingStudentName) {
+          await updateStudent(editingStudentName, capitalizedStudentName);
+        } else {
+          await storeStudent(capitalizedStudentName);
+        }
+        setNewStudentName('');
+        setModalVisible(false);
+        // Reload students after saving a new student or updating an existing one
+        loadStudents().then(storedStudents => setStudents(storedStudents));
       }
     }
   };
@@ -60,6 +68,12 @@ export default function Students() {
   const cancelAddStudent = () => {
     setNewStudentName('');
     setModalVisible(false);
+  };
+
+  const handleEditStudent = async studentName => {
+    setModalVisible(true);
+    setEditingStudentName(studentName);
+    setNewStudentName(studentName);
   };
 
   const handleDeleteStudent = async studentName => {
@@ -89,14 +103,14 @@ export default function Students() {
               />
               <Text style={styles.studentText}>{student}</Text>
               <TouchableOpacity
+                onPress={() => handleEditStudent(student)}
+                style={styles.editButton}>
+                <Icon name="create-outline" size={20} color="blue" />
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => handleDeleteStudent(student)}
                 style={styles.deleteButton}>
                 <Icon name="trash-outline" size={20} color="red" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => console.log('Edit student:', student)}
-                style={styles.editButton}>
-                <Icon name="create-outline" size={20} color="blue" />
               </TouchableOpacity>
             </View>
           ))
