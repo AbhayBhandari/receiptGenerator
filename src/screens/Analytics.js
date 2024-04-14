@@ -136,13 +136,15 @@ export default function Analytics() {
 
   return (
     <View style={styles.container}>
-      {console.log(
-        'year wale ki length',
-        feeSumByYear?.yearDatasets?.length > 0,
-      )}
-      {console.log('check check', Math.ceil(feeSumByMonth?.datasets?.length/2))}
-      {feeSumByMonth?.datasets?.length > 0 &&
-      feeSumByYear?.yearDatasets?.length > 0 ? (
+      {console.log('year wale ki length', feeSumByYear?.yearLabels?.length > 0)}
+      {console.log('year for test', feeSumByYear)}
+      {console.log('year labels for test', feeSumByYear.yearLabels)}
+      {console.log('month labels for test', feeSumByMonth.labels)}
+      {console.log('month for test', feeSumByMonth)}
+      {console.log('lenght', feeSumByMonth?.labels?.length)}
+      {console.log('check check', Math.ceil(feeSumByMonth?.labels?.length / 2))}
+      {feeSumByMonth?.labels?.length > 0 &&
+      feeSumByYear?.yearLabels?.length > 0 ? (
         <>
           <BarChartGraph data={feeSumByYear} />
           <LineChartGraph data={feeSumByMonth} />

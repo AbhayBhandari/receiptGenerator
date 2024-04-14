@@ -15,7 +15,6 @@ export default function BarChartGraph({data}) {
         height={280}
         yAxisLabel={'₹ '}
         yAxisSuffix="k"
-        fromZero={true}
         chartConfig={{
           propsForBackgroundLines: {
             stroke: 'white',
