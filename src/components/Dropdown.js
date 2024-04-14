@@ -8,7 +8,13 @@ export default function Dropdown({onPress, selectedValue, dropdownName}) {
       <Text
         style={[
           styles.textStyle,
-          {color: selectedValue ? colors.black : colors.greyDark},
+          {
+            color: selectedValue ? colors.black : colors.greyDark,
+            fontSize:
+              dropdownName === 'Student Name' && selectedValue?.length >= 15
+                ? 13.5
+                : 16,
+          },
         ]}>
         {selectedValue || dropdownName}
       </Text>
