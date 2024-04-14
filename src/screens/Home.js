@@ -132,7 +132,7 @@ export default function Home() {
   };
 
   const handleStudentSelect = studentName => {
-    setStudentsList(studentName);
+    setStudentName(studentName);
     setIsStudentDropDownModalOpen(false);
   };
 
@@ -167,7 +167,7 @@ export default function Home() {
 
       <View style={styles.inputWrapper}>
         <Dropdown
-          selectedValue={studentsList}
+          selectedValue={studentName}
           dropdownName="Student Name"
           onPress={() => setIsStudentDropDownModalOpen(true)}
         />
