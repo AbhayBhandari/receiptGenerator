@@ -190,7 +190,7 @@ export default function Students() {
               style={[
                 styles.modalButton,
                 styles.cancelButton,
-                {alignItems: 'center', alignSelf: 'center', top: 30},
+                {alignItems: 'center', alignSelf: 'center'},
               ]}>
               <Text style={[styles.buttonText, styles.buttonTextWhite]}>
                 OK
@@ -266,7 +266,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     width: '90%',
-    height: '30%',
   },
   input: {
     color: colors.black,
