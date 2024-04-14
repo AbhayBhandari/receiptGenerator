@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -11,11 +11,15 @@ import colors from './src/utils/Colors';
 import Search from './src/screens/Search';
 import Filter from './src/screens/Filter';
 import Students from './src/screens/Students';
+import SplashScreen from 'react-native-splash-screen';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <NavigationContainer>
       <Tab.Navigator
