@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import colors from '../utils/Colors';
 
-export default function MonthDropDownModal({
+export default function DropDownModal({
   isVisible,
   items,
   onSelect,

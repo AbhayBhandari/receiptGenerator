@@ -11,10 +11,11 @@ import colors from '../utils/Colors';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import {generateHtmlContent} from '../utils/PdfHtmlTemplate';
-import {storeData} from '../utils/AsynStorage';
-import MonthDropdown from '../components/MonthDropdown';
-import MonthDropDownModal from '../components/MonthDropDownModal';
+import {loadStudents, storeData} from '../utils/AsynStorage';
+import Dropdown from '../components/Dropdown';
+import DropDownModal from '../components/DropDownModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function Home() {
   const [studentName, setStudentName] = useState('');
@@ -26,12 +27,33 @@ export default function Home() {
   const [isGenerateClicked, setIsGenerateClicked] = useState(false);
   const [isMonthDropDownModalOpen, setIsMonthDropDownModalOpen] =
     useState(false);
+  const [isStudentDropDownModalOpen, setIsStudentDropDownModalOpen] =
+    useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [studentsList, setStudentsList] = useState([]);
 
   useEffect(() => {
     // Enable Generate button only when all fields are filled
     setGenerateDisabled(!(studentName && fee && selectedMonth));
   }, [studentName, fee, selectedMonth]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadStudentNames = async () => {
+        try {
+          setIsLoading(true);
+          const students = await loadStudents();
+          setStudentsList(students);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error loading student names:', error);
+        }
+      };
+
+      loadStudentNames();
+    }, []),
+  );
 
   const months = [
     'January',
@@ -98,7 +120,7 @@ export default function Home() {
       }
 
       console.log('PDF generated:', filePath);
-      setPdfPath(filePath); // Set the generated PDF path
+      setPdfPath(filePath);
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
@@ -109,28 +131,47 @@ export default function Home() {
     setIsMonthDropDownModalOpen(false);
   };
 
+  const handleStudentSelect = studentName => {
+    setStudentsList(studentName);
+    setIsStudentDropDownModalOpen(false);
+  };
+
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || selectedDate;
     setShowDatePicker(false);
     setSelectedDate(currentDate);
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={colors.tabIcons} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <MonthDropDownModal
+      <DropDownModal
         isVisible={isMonthDropDownModalOpen}
         items={months}
         onSelect={handleMonthSelect}
         onClose={() => setIsMonthDropDownModalOpen(false)}
       />
+      <DropDownModal
+        isVisible={isStudentDropDownModalOpen}
+        items={studentsList}
+        onSelect={handleStudentSelect}
+        onClose={() => setIsStudentDropDownModalOpen(false)}
+      />
+
       <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setStudentName(text)}
-          value={studentName}
-          placeholder="Student Name"
-          placeholderTextColor={colors.greyDark}
+        <Dropdown
+          selectedValue={studentsList}
+          dropdownName="Student Name"
+          onPress={() => setIsStudentDropDownModalOpen(true)}
         />
+
         <TextInput
           style={styles.input}
           onChangeText={text => setFee(text)}
@@ -140,8 +181,9 @@ export default function Home() {
           placeholderTextColor={colors.greyDark}
         />
 
-        <MonthDropdown
-          selectedMonth={selectedMonth}
+        <Dropdown
+          selectedValue={selectedMonth}
+          dropdownName="Month"
           onPress={() => setIsMonthDropDownModalOpen(true)}
         />
 
@@ -185,6 +227,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: colors.secondary,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.secondary,
   },
   input: {

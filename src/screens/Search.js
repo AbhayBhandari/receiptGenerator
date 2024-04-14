@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {getAllData} from '../utils/AsynStorage';
 import FilterDropdown from '../components/FilterDropdown';

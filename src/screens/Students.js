@@ -9,7 +9,7 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Import Ionicons
+import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../utils/Colors';
 import {storeStudent, loadStudents} from '../utils/AsynStorage';
 
