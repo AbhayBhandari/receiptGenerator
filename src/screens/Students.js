@@ -184,13 +184,13 @@ export default function Students() {
         }}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Student name already exists!</Text>
+            <Text style={styles.modalText}>Name already exists!</Text>
             <TouchableOpacity
               onPress={() => setIsNameExistsModalVisible(false)}
               style={[
                 styles.modalButton,
                 styles.cancelButton,
-                {alignItems: 'center'},
+                {alignItems: 'center', alignSelf: 'center', top: 30},
               ]}>
               <Text style={[styles.buttonText, styles.buttonTextWhite]}>
                 OK
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalText: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 20,
     textAlign: 'center',
     fontFamily: 'serif',
