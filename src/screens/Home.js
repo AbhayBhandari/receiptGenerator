@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primaryLight,
     color: colors.black,
     height: 60,
-    width: 250,
+    width: '90%',
     borderColor: colors.black,
     borderWidth: 1,
     marginBottom: 10,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   inputWrapper: {
     top: 70,
     backgroundColor: colors.white,
-    width: '88%',
+    width: '96%',
     alignItems: 'center',
     height: 400,
     justifyContent: 'center',
