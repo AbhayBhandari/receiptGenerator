@@ -105,12 +105,12 @@ export default function Students() {
               <TouchableOpacity
                 onPress={() => handleEditStudent(student)}
                 style={styles.editButton}>
-                <Icon name="create-outline" size={20} color="blue" />
+                <Icon name="create-outline" size={22} color={colors.greyDark} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => handleDeleteStudent(student)}
                 style={styles.deleteButton}>
-                <Icon name="trash-outline" size={20} color="red" />
+                <Icon name="trash-outline" size={22} color={colors.error} />
               </TouchableOpacity>
             </View>
           ))
@@ -160,7 +160,12 @@ export default function Students() {
               <TouchableOpacity
                 onPress={saveStudent}
                 style={[styles.modalButton, styles.saveButton]}>
-                <Text style={[styles.buttonText, styles.buttonTextWhite]}>
+                <Text
+                  style={[
+                    styles.buttonText,
+                    styles.buttonTextWhite,
+                    {color: colors.white},
+                  ]}>
                   Save
                 </Text>
               </TouchableOpacity>
@@ -207,6 +212,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingVertical: 20,
     backgroundColor: colors.secondary,
+    top: 20,
   },
   studentCard: {
     flexDirection: 'row',
@@ -259,7 +265,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
     padding: 20,
-    width: '80%',
+    width: '90%',
+    height: '30%',
   },
   input: {
     color: colors.black,
@@ -268,7 +275,8 @@ const styles = StyleSheet.create({
     borderColor: colors.greyDark,
     borderRadius: 5,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 60,
+    marginTop: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -277,19 +285,24 @@ const styles = StyleSheet.create({
   modalButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 8,
+    width: 126,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: colors.error,
+    borderWidth: 1,
+    borderColor: colors.tabIcons,
+    backgroundColor: colors.white,
   },
   saveButton: {
-    backgroundColor: colors.success,
+    backgroundColor: colors.tabIcons,
   },
   buttonText: {
     fontWeight: 'bold',
   },
   buttonTextWhite: {
-    color: colors.black,
+    color: colors.tabIcons,
     fontFamily: 'serif',
   },
   loadingContainer: {
@@ -306,9 +319,10 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
   deleteButton: {
-    marginLeft: 'auto',
+    marginLeft: 5,
+    left: 5,
   },
   editButton: {
-    marginLeft: 10,
+    left: 3,
   },
 });
